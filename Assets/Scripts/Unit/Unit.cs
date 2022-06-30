@@ -10,8 +10,13 @@ public class Unit : MonoBehaviour
 
     private readonly int IsWalkingHash = Animator.StringToHash("IsWalking");
 
-    private void Start() {
+    private void Awake() {
         targetPosition = transform.position;
+    }
+
+    private void Start() {
+        GridPosition gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        LevelGrid.Instance.SetUnitAtGridPosition(gridPosition, this);
     }
 
     private void Update() {
