@@ -17,9 +17,7 @@ public class LevelGrid : MonoBehaviour
         }
 
         Instance = this;
-    }
 
-    private void Start() {
         gridSystem = new GridSystem(16, 16, 2f);
         gridSystem.CreateDebugObjects(debugObjectPrefab);
     }
@@ -44,5 +42,7 @@ public class LevelGrid : MonoBehaviour
         AddUnitAtGridPosition(to, unit);
     }
 
-    public GridPosition GetGridPosition(Vector3 worldPosition) => gridSystem.GetGridPosition(worldPosition);
+    public GridPosition GetGridPosition(Vector3 worldPosition) {
+        return gridSystem.GetGridPosition(worldPosition);
+    }
 }
