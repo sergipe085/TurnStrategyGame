@@ -24,7 +24,7 @@ public class GridSystem
         }
     }
 
-    private Vector3 GetWorldPosition(GridPosition gridPosition) {
+    public Vector3 GetWorldPosition(GridPosition gridPosition) {
         return new Vector3(gridPosition.x, 0, gridPosition.z) * cellSize;
     }
 
@@ -50,8 +50,8 @@ public class GridSystem
     }
 
     public bool IsGridPositionValid(GridPosition gridPosition) {
-        if (gridPosition.x >= gridObjectArray.GetLength(0) || gridPosition.x < 0) return false;
-        if (gridPosition.z >= gridObjectArray.GetLength(0) || gridPosition.z < 0) return false;
+        if (gridPosition.x >= width || gridPosition.x < 0) return false;
+        if (gridPosition.z >= height || gridPosition.z < 0) return false;
         return true;
     }
 }
