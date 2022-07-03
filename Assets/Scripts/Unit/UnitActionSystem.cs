@@ -51,7 +51,7 @@ public class UnitActionSystem : MonoBehaviour
         if (!selectedUnit) return;
 
         Vector3 targetPosition = MouseWorld.GetPosition();
-        selectedUnit.Move(targetPosition);
+        selectedUnit.GetMoveAction().Move(targetPosition);
     }
 
     public Unit TryGetUnit() {

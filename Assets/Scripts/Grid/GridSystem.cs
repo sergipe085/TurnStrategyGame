@@ -48,4 +48,10 @@ public class GridSystem
     public GridObject GetGridObject(GridPosition gridPosition) {
         return gridObjectArray[gridPosition.x, gridPosition.z];
     }
+
+    public bool IsGridPositionValid(GridPosition gridPosition) {
+        if (gridPosition.x >= gridObjectArray.GetLength(0) || gridPosition.x < 0) return false;
+        if (gridPosition.z >= gridObjectArray.GetLength(0) || gridPosition.z < 0) return false;
+        return true;
+    }
 }
