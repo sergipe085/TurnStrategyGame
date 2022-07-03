@@ -52,6 +52,7 @@ public class UnitActionSystem : MonoBehaviour
 
         Vector3 targetPosition = MouseWorld.GetPosition();
         GridPosition targetGridPosition = LevelGrid.Instance.GetGridPosition(targetPosition);
+
         if (selectedUnit.GetMoveAction().IsValidActionGridPosition(targetGridPosition)) {
             selectedUnit.GetMoveAction().Move(targetGridPosition);
         }
