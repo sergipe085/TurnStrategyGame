@@ -27,6 +27,10 @@ public class UnitActionSystem : MonoBehaviour
             if (!TryHandleUnitSelection())
                 MoveSelectedUnit();
         }
+
+        if (Input.GetMouseButtonDown(1)) {
+            selectedUnit.GetSpinAction().Spin();
+        }
     }
 
     private bool TryHandleUnitSelection() {

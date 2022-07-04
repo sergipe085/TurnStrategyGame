@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpinAction : MonoBehaviour
+public class SpinAction : BaseAction
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private float totalSpinned = 0.0f;
+
+    private void Update() {
+        if (!isActive) return;
+
+        float spinAddAmount = 360f * Time.deltaTime;
+        transform.eulerAngles += new Vector3(0f, spinAddAmount, 0f);
+        totalSpinned += spinAddAmount;
+
+        if (totalSpinned >= 360f) {
+            isActive = false;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void Spin() {
+        isActive = true;
+        totalSpinned = 0.0f;
     }
 }
