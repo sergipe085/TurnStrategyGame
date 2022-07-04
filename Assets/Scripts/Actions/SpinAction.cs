@@ -21,9 +21,8 @@ public class SpinAction : BaseAction
     }
 
     public override void TakeAction(GridPosition gridPosition, Action onCompleteFunction) {
-        isActive = true;
+        base.TakeAction(gridPosition, onCompleteFunction);
         totalSpinned = 0.0f;
-        OnActionCompleteEvent = onCompleteFunction;
     }
 
     public override string GetActionName() {
