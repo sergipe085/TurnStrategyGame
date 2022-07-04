@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,15 +33,17 @@ public class MoveAction : BaseAction
         else {
             unitAnimator.SetBool(IsWalkingHash, false);
             isActive = false;
+            OnActionCompleteEvent?.Invoke();
         }
 
         float rotateSpeed = 20.0f;
         transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
     }
 
-    public void Move(GridPosition _targetGridPosition) {
+    public void Move(GridPosition _targetGridPosition, Action onCompleteFunction) {
         this.targetPosition = LevelGrid.Instance.GetWorldPosition(_targetGridPosition);
         isActive = true;
+        OnActionCompleteEvent = onCompleteFunction;
     }
 
     public bool IsValidActionGridPosition(GridPosition gridPosition) {

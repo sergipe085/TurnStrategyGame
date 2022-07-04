@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,11 +16,13 @@ public class SpinAction : BaseAction
 
         if (totalSpinned >= 360f) {
             isActive = false;
+            OnActionCompleteEvent?.Invoke();
         }
     }
 
-    public void Spin() {
+    public void Spin(Action onCompleteFunction) {
         isActive = true;
         totalSpinned = 0.0f;
+        OnActionCompleteEvent = onCompleteFunction;
     }
 }
