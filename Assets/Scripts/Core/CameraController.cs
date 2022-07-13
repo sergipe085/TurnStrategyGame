@@ -6,11 +6,11 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     private void OnEnable() {
-        UnitActionSystem.Instance.OnSelectedUnitChange += OnUnitSelectChange;
+        //UnitActionSystem.Instance.OnSelectedUnitChange += OnUnitSelectChange;
     }
 
     private void OnDisable() {
-        UnitActionSystem.Instance.OnSelectedUnitChange -= OnUnitSelectChange;
+        //UnitActionSystem.Instance.OnSelectedUnitChange -= OnUnitSelectChange;
     }
 
     private void Update() {
