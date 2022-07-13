@@ -8,6 +8,8 @@ public class UnitActionSystem : MonoBehaviour
 {
     public static UnitActionSystem Instance { get; private set; }
 
+    [SerializeField] private int ACTION_POINTS_MAX = 3;
+
     public event EventHandler OnSelectedUnitChange;
     public event EventHandler OnSelectedActionChange;
     public event EventHandler<bool> OnBusyChanged;
@@ -31,7 +33,10 @@ public class UnitActionSystem : MonoBehaviour
     }
 
     private void Start() {
+        TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
+
         SetSelectedUnit(selectedUnit);
+        ResetActionPoints();
     }
 
     private void Update() {
@@ -136,5 +141,13 @@ public class UnitActionSystem : MonoBehaviour
 
     public int GetActionPoints() {
         return actionPoints;
+    }
+
+    private void ResetActionPoints() {
+        actionPoints = ACTION_POINTS_MAX;
+    }
+
+    private void TurnSystem_OnTurnChanged(object sender, EventArgs empty) {
+        ResetActionPoints();
     }
 }
