@@ -5,6 +5,7 @@ using UnityEngine;
 
 public abstract class BaseAction : MonoBehaviour
 {
+    [SerializeField] private int actionCost = 1;
     protected Unit unit = null;
     protected bool isActive = false;
     protected Action OnActionCompleteEvent;
@@ -25,4 +26,8 @@ public abstract class BaseAction : MonoBehaviour
     }
 
     public abstract List<GridPosition> GetValidActionGridPositionList();
+
+    public virtual int GetActionPointsCost() {
+        return actionCost;
+    }
 }

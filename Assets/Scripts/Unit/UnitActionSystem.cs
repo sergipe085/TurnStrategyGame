@@ -11,12 +11,14 @@ public class UnitActionSystem : MonoBehaviour
     public event EventHandler OnSelectedUnitChange;
     public event EventHandler OnSelectedActionChange;
     public event EventHandler<bool> OnBusyChanged;
+    public event EventHandler OnActionStarted;
 
     [SerializeField] private Unit selectedUnit = null;
     [SerializeField] private LayerMask unitLayerMask;
 
     private BaseAction selectedAction = null;
     private bool isBusy = false;
+    private int actionPoints = 2;
 
     private void Awake() {
         if (Instance != null) {
@@ -45,12 +47,16 @@ public class UnitActionSystem : MonoBehaviour
 
     private void HandleSelectedAction() {
         if (Input.GetMouseButtonDown(0)) {
+            if (!CanSpendActionPointsToTakeAction(selectedAction)) return;
+
             Vector3 targetPosition = MouseWorld.GetPosition();
             GridPosition targetGridPosition = LevelGrid.Instance.GetGridPosition(targetPosition);
 
             if (selectedAction.IsValidActionGridPosition(targetGridPosition)) {
                 SetBusy();
                 selectedAction.TakeAction(targetGridPosition, ClearBusy);
+                SpendActionPoints(selectedAction.GetActionPointsCost());
+                OnActionStarted?.Invoke(this, null);
             }
         }
     }
@@ -111,5 +117,24 @@ public class UnitActionSystem : MonoBehaviour
 
     public BaseAction GetSelectedAction() {
         return selectedAction;
+    }
+
+    private bool CanSpendActionPointsToTakeAction(BaseAction baseAction) {
+        return actionPoints - baseAction.GetActionPointsCost() >= 0;
+    }
+
+    private void SpendActionPoints(int amount) {
+        actionPoints = Mathf.Clamp(actionPoints - amount, 0, 10);
+    }
+
+    private bool TrySpendActionPoints(BaseAction baseAction) {
+        if (!CanSpendActionPointsToTakeAction(baseAction)) return false;
+
+        SpendActionPoints(baseAction.GetActionPointsCost());
+        return true;
+    }
+
+    public int GetActionPoints() {
+        return actionPoints;
     }
 }
