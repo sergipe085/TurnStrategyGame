@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    [SerializeField] private bool isEnemy = false;
+
     private GridPosition gridPosition;
     private MoveAction moveAction = null;
     private SpinAction spinAction = null;
@@ -43,5 +45,9 @@ public class Unit : MonoBehaviour
 
     public BaseAction[] GetBaseActionArray() {
         return baseActionArray;
+    }
+
+    public bool IsEnemy() {
+        return isEnemy;
     }
 }
