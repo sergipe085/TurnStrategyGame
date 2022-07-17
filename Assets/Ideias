@@ -1,3 +1,7 @@
 O que esse jogo pode ser
 
 - Trocar os personagens por pecas de xadrez e fazer o combate baseado nas pecas de xadrez
+
+- A cada turno o player vai fazer 3 movimentos e o inimigo 3 (IA)
+- Os personagens vao ser pecas de xadrez e vao se mover / atacar do jeito q as pecas fazem
+- O objetivo do player eh matar o rei adversario (ainda to pensando como vai ser isso)
