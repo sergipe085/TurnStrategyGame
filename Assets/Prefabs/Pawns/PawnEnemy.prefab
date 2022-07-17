@@ -7,6 +7,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8634109010582632455, guid: 81e4d0faab8181246a26ecd7a0112276,
+        type: 3}
+      propertyPath: movementType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8634109010582632455, guid: 81e4d0faab8181246a26ecd7a0112276,
+        type: 3}
+      propertyPath: maxMoveDistance
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2379924582548943605, guid: 81e4d0faab8181246a26ecd7a0112276,
         type: 3}
       propertyPath: pawnBrokenPrefab

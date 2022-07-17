@@ -177,7 +177,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionCost: 1
-  maxMoveDistance: 0
+  movementType: 1
+  maxMoveDistance: 1
+  alignRotation: 1
 --- !u!114 &-7241186003804415640
 MonoBehaviour:
   m_ObjectHideFlags: 0

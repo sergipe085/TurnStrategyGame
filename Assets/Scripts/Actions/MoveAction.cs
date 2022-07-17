@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class MoveAction : BaseAction
 {
+    [SerializeField] private MovementType movementType;
     [SerializeField] private int maxMoveDistance = 0;
+    [SerializeField] private bool alignRotation = false;
 
     private Vector3 targetPosition = Vector3.zero;
 
@@ -33,8 +35,9 @@ public class MoveAction : BaseAction
             ActionComplete();
         }
 
-        float rotateSpeed = 20.0f;
-        transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
+        if (alignRotation) {
+            transform.forward = Vector3.Lerp(transform.forward, moveDirection, 10.0f * Time.deltaTime);
+        }
     }
 
     public override void TakeAction(GridPosition _targetGridPosition, Action onCompleteFunction) {
@@ -44,28 +47,76 @@ public class MoveAction : BaseAction
     }
 
     public override List<GridPosition> GetValidActionGridPositionList() {
-        List<GridPosition> validGridPositions = new List<GridPosition>();
-        GridPosition unitGridPosition = unit.GetGridPosition();
+        List<GridPosition> validGridPositionList = new List<GridPosition>();
 
-        for (int x = -maxMoveDistance; x <= maxMoveDistance; x++) {
-            for (int z = -maxMoveDistance; z <= maxMoveDistance; z++) {
-                GridPosition offsetGridPosition = new GridPosition(x, z);
-                GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
-
-                if (testGridPosition != unitGridPosition &&
-                    LevelGrid.Instance.IsGridPositionValid(testGridPosition) &&
-                    !LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition)
-                ) {
-                    validGridPositions.Add(testGridPosition);
-                }
-            }   
+        switch (movementType) {
+            case MovementType.ALL:
+                validGridPositionList.AddRange(GetDiagonalGridPositionList());
+                validGridPositionList.AddRange(GetVHGridPositionList());
+                break;
+            case MovementType.DIAGONAL:
+                validGridPositionList = GetDiagonalGridPositionList();
+                break;
+            case MovementType.VH:
+                validGridPositionList = GetVHGridPositionList();
+                break;
         }
 
-        return validGridPositions;
+        return validGridPositionList;
+    }
+
+    private List<GridPosition> GetDiagonalGridPositionList() {
+        List<GridPosition> validGridPositionList = new List<GridPosition>();
+
+        GridPosition unitGridPosition = unit.GetGridPosition();
+
+        for (int x = -maxMoveDistance; x <= maxMoveDistance; x += 1) {
+            for (int y = -maxMoveDistance; y <= maxMoveDistance; y += 1) {
+                GridPosition offsetGridPosition = new GridPosition(x, y);
+                GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
+
+                if (testGridPosition == unitGridPosition || 
+                    !LevelGrid.Instance.IsGridPositionValid(testGridPosition) || 
+                    LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition)) {
+                    continue;
+                }
+
+                if (Mathf.Abs(x) == Mathf.Abs(y)) {
+                    validGridPositionList.Add(testGridPosition);
+                }
+            }
+        }
+
+        return validGridPositionList;
+    }
+
+    private List<GridPosition> GetVHGridPositionList() {
+        List<GridPosition> validGridPositionList = new List<GridPosition>();
+
+        GridPosition unitGridPosition = unit.GetGridPosition();
+
+        for (int x = -maxMoveDistance; x <= maxMoveDistance; x += 1) {
+            for (int y = -maxMoveDistance; y <= maxMoveDistance; y += 1) {
+                GridPosition offsetGridPosition = new GridPosition(x, y);
+                GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
+
+                if (testGridPosition == unitGridPosition || 
+                    !LevelGrid.Instance.IsGridPositionValid(testGridPosition) || 
+                    (x != 0 && y != 0) ||
+                    LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition)) {
+                    continue;
+                }
+
+                validGridPositionList.Add(testGridPosition);
+            }
+        }
+
+        return validGridPositionList;
     }
 
     public override string GetActionName() {
         return "MOVE";
     }
-
 }
+
+public enum MovementType { DIAGONAL, VH, ALL };
