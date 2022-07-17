@@ -7,25 +7,40 @@ public class AttackAction : BaseAction
 {
     [SerializeField] private int maxAttackDistance = 1;
     [SerializeField] private AttackType attackType;
+    
+    [Header("--- JUMP EFFECT ---")]
+    [SerializeField] private Transform model = null;
+    [SerializeField] private AnimationCurve jumpAnimationCurve = null;
+    [SerializeField] private float jumpTime = 2.0f;
+    [SerializeField] private float jumpHeightMultiplier = 4.0f;
+    private Vector3 targetPosition;
+    private Vector3 initialPosition = Vector3.zero;
+    private float currentJumpTime = 0.0f;
 
-    private float totalSpinned = 0.0f;
+
+    private Unit targetUnit = null;
 
     private void Update() {
         if (!isActive) return;
 
-        float spinAddAmount = 360f * Time.deltaTime;
-        transform.eulerAngles += new Vector3(0f, spinAddAmount, 0f);
-        totalSpinned += spinAddAmount;
+        currentJumpTime += Time.deltaTime;
+        float jumpOffset = currentJumpTime / jumpTime;
 
-        if (totalSpinned >= 360f) {
-            isActive = false;
-            OnActionCompleteEvent?.Invoke();
+        transform.position = Vector3.Lerp(initialPosition, targetPosition, jumpOffset);
+        model.localPosition = new Vector3(0f, jumpAnimationCurve.Evaluate(1 - jumpOffset) * jumpHeightMultiplier);
+
+        if (currentJumpTime >= jumpTime) {
+            targetUnit.Damage();
+            ActionComplete();
         }
     }
 
     public override void TakeAction(GridPosition gridPosition, Action onCompleteFunction) {
         base.TakeAction(gridPosition, onCompleteFunction);
-        totalSpinned = 0.0f;
+        targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
+        initialPosition = transform.position;
+        targetPosition = targetUnit.transform.position;
+        currentJumpTime = 0.0f;
     }
 
     public override string GetActionName() {

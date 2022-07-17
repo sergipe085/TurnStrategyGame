@@ -53,5 +53,7 @@ public class Unit : MonoBehaviour
 
     public void Damage() {
         Debug.Log(transform + " damaged");
+        LevelGrid.Instance.RemoveUnitAtGridPosition(gridPosition, this);
+        this.gameObject.SetActive(false);
     }
 }
