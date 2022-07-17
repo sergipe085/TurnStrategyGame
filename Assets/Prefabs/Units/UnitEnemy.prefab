@@ -7,6 +7,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6207431788603059496, guid: 14506911b7e798346807240e0c06ed15,
+        type: 3}
+      propertyPath: ragdollPrefab
+      value: 
+      objectReference: {fileID: 8445045673517752834, guid: 0428bfc81e0e033489087bf02d9b1955,
+        type: 3}
     - target: {fileID: 1140388515394263049, guid: 14506911b7e798346807240e0c06ed15,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -16,7 +22,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 98bc34ddef060be4ea47e99161e9df8f, type: 2}
+      objectReference: {fileID: 2100000, guid: 7d22fc6b9a431b043a917fb89a80bcfc, type: 2}
     - target: {fileID: 3166403503125872232, guid: 14506911b7e798346807240e0c06ed15,
         type: 3}
       propertyPath: isEnemy
