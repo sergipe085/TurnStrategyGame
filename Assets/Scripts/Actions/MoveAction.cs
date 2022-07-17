@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class MoveAction : BaseAction
 {
-    [SerializeField] private Animator unitAnimator = null;
     [SerializeField] private int maxMoveDistance = 0;
 
-    private readonly int IsWalkingHash = Animator.StringToHash("IsWalking");
-
     private Vector3 targetPosition = Vector3.zero;
+
+    public event Action OnStartMoving;
+    public event Action OnStopMoving;
 
     protected override void Awake() {
         base.Awake();
@@ -27,11 +27,9 @@ public class MoveAction : BaseAction
 
             float moveSpeed = 4.0f;
             transform.position += moveDirection * Time.deltaTime * moveSpeed;
-
-            unitAnimator.SetBool(IsWalkingHash, true);
         }
         else {
-            unitAnimator.SetBool(IsWalkingHash, false);
+            OnStopMoving?.Invoke();
             ActionComplete();
         }
 
@@ -42,6 +40,7 @@ public class MoveAction : BaseAction
     public override void TakeAction(GridPosition _targetGridPosition, Action onCompleteFunction) {
         base.TakeAction(_targetGridPosition, onCompleteFunction);
         this.targetPosition = LevelGrid.Instance.GetWorldPosition(_targetGridPosition);
+        OnStartMoving?.Invoke();
     }
 
     public override List<GridPosition> GetValidActionGridPositionList() {
