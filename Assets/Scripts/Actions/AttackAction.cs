@@ -30,7 +30,8 @@ public class AttackAction : BaseAction
         model.localPosition = new Vector3(0f, jumpAnimationCurve.Evaluate(1 - jumpOffset) * jumpHeightMultiplier);
 
         if (currentJumpTime >= jumpTime) {
-            targetUnit.Damage();
+            int damage = 100;
+            targetUnit.Damage(damage);
             ActionComplete();
         }
     }
