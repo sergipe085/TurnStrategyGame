@@ -32,8 +32,7 @@ public class MoveAction : BaseAction
         }
         else {
             unitAnimator.SetBool(IsWalkingHash, false);
-            isActive = false;
-            OnActionCompleteEvent?.Invoke();
+            ActionComplete();
         }
 
         float rotateSpeed = 20.0f;

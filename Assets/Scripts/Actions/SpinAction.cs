@@ -15,8 +15,7 @@ public class SpinAction : BaseAction
         totalSpinned += spinAddAmount;
 
         if (totalSpinned >= 360f) {
-            isActive = false;
-            OnActionCompleteEvent?.Invoke();
+            ActionComplete();
         }
     }
 

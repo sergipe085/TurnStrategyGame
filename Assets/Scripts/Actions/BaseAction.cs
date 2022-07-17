@@ -30,4 +30,9 @@ public abstract class BaseAction : MonoBehaviour
     public virtual int GetActionPointsCost() {
         return actionCost;
     }
+
+    protected void ActionComplete() {
+        isActive = false;
+        OnActionCompleteEvent?.Invoke();
+    }
 }

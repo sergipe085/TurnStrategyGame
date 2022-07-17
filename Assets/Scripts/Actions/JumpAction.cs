@@ -25,8 +25,7 @@ public class JumpAction : BaseAction
         model.localPosition = new Vector3(0f, jumpAnimationCurve.Evaluate(1 - jumpOffset) * maxJumpDistance);
 
         if (currentJumpTime >= jumpTime) {
-            isActive = false;
-            OnActionCompleteEvent.Invoke();
+            ActionComplete();
         }
     }
 
