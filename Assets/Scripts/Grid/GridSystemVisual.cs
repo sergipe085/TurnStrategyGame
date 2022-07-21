@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,19 @@ public class GridSystemVisual : MonoBehaviour
 
     [SerializeField] private Transform gridSystemVisualSinglePrefab = null;
     private GridSystemVisualSingle[,] gridSystemVisualSingles;
+
+    [Serializable]
+    public struct GridVisualTypeMaterial {
+        public GridType gridType;
+        public Material material;
+    }
+
+    [SerializeField] private List<GridVisualTypeMaterial> gridVisualTypeMaterials = new();
+
+    public enum GridType {
+        White, 
+        Blue
+    }
 
     private void Awake() {
         Instance = this;
@@ -26,10 +40,22 @@ public class GridSystemVisual : MonoBehaviour
                 gridSystemVisualSingles[x, z] = gridVisualObject.GetComponent<GridSystemVisualSingle>();
             }
         }
+
+        UnitActionSystem.Instance.OnSelectedActionChange += HandleOnSelectedActionChange;
+        LevelGrid.OnAnyUnitMovePosition += UpdateGridVisual;
+        UpdateGridVisual();
     }
 
-    private void Update() {
+    private void UpdateGridVisualSingleColors(BaseAction baseAction) {
+        foreach(GridSystemVisualSingle gridSystemVisualSingle in gridSystemVisualSingles) {
+            Material mat = gridVisualTypeMaterials.Find(a => a.gridType == baseAction.gridType).material;
+            gridSystemVisualSingle.UpdateMaterial(mat);
+        }
+    }
+
+    private void HandleOnSelectedActionChange(object sender, EventArgs a) {
         UpdateGridVisual();
+        UpdateGridVisualSingleColors(UnitActionSystem.Instance.GetSelectedAction());
     }
 
     public void HideAllGridPosition() {
@@ -48,6 +74,7 @@ public class GridSystemVisual : MonoBehaviour
         HideAllGridPosition();
 
         BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedAction();
+        if (!selectedAction) return;
         List<GridPosition> validList = selectedAction.GetValidActionGridPositionList();
 
         ShowGridPositionList(validList);

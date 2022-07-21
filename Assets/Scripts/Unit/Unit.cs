@@ -13,6 +13,8 @@ public class Unit : MonoBehaviour
     private SpinAction spinAction = null;
     private BaseAction[] baseActionArray;
 
+    [SerializeField] Transform actionCameraPosition = null;
+
     private void Awake() {
         moveAction = GetComponent<MoveAction>();
         healthSystem = GetComponent<HealthSystem>();
@@ -30,8 +32,9 @@ public class Unit : MonoBehaviour
     private void Update() {
         GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
         if (newGridPosition != gridPosition) {
-            LevelGrid.Instance.UnitMovedGridPosition(this, gridPosition, newGridPosition);
+            GridPosition oldGridPosition = gridPosition;
             gridPosition = newGridPosition;
+            LevelGrid.Instance.UnitMovedGridPosition(this, oldGridPosition, newGridPosition);
         }
     }
 
@@ -63,4 +66,10 @@ public class Unit : MonoBehaviour
         LevelGrid.Instance.RemoveUnitAtGridPosition(gridPosition, this);
         Destroy(this.gameObject);
     }
+
+    public Vector3 GetActionCameraPosition() {
+        return transform.position + actionCameraPosition.localPosition;
+    }
+
+    public HealthSystem GetHealthSystem() => healthSystem;
 }

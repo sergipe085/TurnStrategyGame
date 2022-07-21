@@ -38,10 +38,13 @@ public class AttackAction : BaseAction
 
     public override void TakeAction(GridPosition gridPosition, Action onCompleteFunction) {
         base.TakeAction(gridPosition, onCompleteFunction);
+
+
         targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
         initialPosition = transform.position;
         targetPosition = targetUnit.transform.position;
         currentJumpTime = 0.0f;
+        ActionStart(onCompleteFunction);
     }
 
     public override string GetActionName() {
@@ -72,12 +75,16 @@ public class AttackAction : BaseAction
 
         GridPosition unitGridPosition = unit.GetGridPosition();
 
-        for (int x = -maxAttackDistance; x <= maxAttackDistance; x += 2) {
-            for (int y = -maxAttackDistance; y <= maxAttackDistance; y += 2) {
+        for (int x = -maxAttackDistance; x <= maxAttackDistance; x += 1) {
+            for (int y = -maxAttackDistance; y <= maxAttackDistance; y += 1) {
                 GridPosition offsetGridPosition = new GridPosition(x, y);
                 GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
 
                 if (testGridPosition == unitGridPosition || !LevelGrid.Instance.IsGridPositionValid(testGridPosition)) {
+                    continue;
+                }
+
+                if (!(Mathf.Abs(x) == Mathf.Abs(y))) {
                     continue;
                 }
 

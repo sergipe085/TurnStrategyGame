@@ -31,11 +31,14 @@ public class JumpAction : BaseAction
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete) {
         base.TakeAction(gridPosition, onActionComplete);
+
+
         targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
         initialPosition = transform.position;
         currentJumpTime = 0.0f;
 
         transform.rotation = Quaternion.LookRotation(targetPosition - transform.position);
+        ActionStart(onActionComplete);
     }
 
     public override List<GridPosition> GetValidActionGridPositionList() {
